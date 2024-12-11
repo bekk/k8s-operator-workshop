@@ -10,15 +10,38 @@ import (
 
 // BusinessHoursScalerSpec defines the desired state of BusinessHoursScaler
 type BusinessHoursScalerSpec struct {
-	Foo string `json:"foo,omitempty"`
+	// DeploymentSelector specifies the label selector to match Deployments which should be scaled
+	DeploymentSelector metav1.LabelSelector `json:"deploymentSelector"`
+
+	// MinReplicas defines the number of replicas during off-hours
+	MinReplicas int32 `json:"minReplicas"`
+
+	// MaxReplicas defines the number of replicas during business hours
+	MaxReplicas int32 `json:"maxReplicas"`
+
+	// StartTime is the time when business hours begin, in HH:mm:ss format
+	StartTime string `json:"startTime"`
+
+	// EndTime is the time when business hours end, in HH:mm:ss format
+	EndTime string `json:"endTime"`
+
+	// The time zone name for the given schedule, see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
+	// +default:value="Etc/UTC"
+	TimeZone string `json:"timeZone,omitempty"`
 }
 
 // BusinessHoursScalerStatus defines the observed state of BusinessHoursScaler
 type BusinessHoursScalerStatus struct {
+	// CurrentReplicas shows the current number of replicas
+	CurrentReplicas int32 `json:"currentReplicas"`
+
+	// LastUpdated is the last time the operator reconciled
+	LastUpdated metav1.Time `json:"lastUpdated"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
+// +kubebuilder:resource:shortName=bhs
 
 // BusinessHoursScaler is the Schema for the businesshoursscalers API
 type BusinessHoursScaler struct {

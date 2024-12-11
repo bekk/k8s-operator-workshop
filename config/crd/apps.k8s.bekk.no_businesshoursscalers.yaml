@@ -11,6 +11,8 @@ spec:
     kind: BusinessHoursScaler
     listKind: BusinessHoursScalerList
     plural: businesshoursscalers
+    shortNames:
+    - bhs
     singular: businesshoursscaler
   scope: Namespaced
   versions:
@@ -40,11 +42,95 @@ spec:
           spec:
             description: BusinessHoursScalerSpec defines the desired state of BusinessHoursScaler
             properties:
-              foo:
+              deploymentSelector:
+                description: DeploymentSelector specifies the label selector to match
+                  Deployments which should be scaled
+                properties:
+                  matchExpressions:
+                    description: matchExpressions is a list of label selector requirements.
+                      The requirements are ANDed.
+                    items:
+                      description: |-
+                        A label selector requirement is a selector that contains values, a key, and an operator that
+                        relates the key and values.
+                      properties:
+                        key:
+                          description: key is the label key that the selector applies
+                            to.
+                          type: string
+                        operator:
+                          description: |-
+                            operator represents a key's relationship to a set of values.
+                            Valid operators are In, NotIn, Exists and DoesNotExist.
+                          type: string
+                        values:
+                          description: |-
+                            values is an array of string values. If the operator is In or NotIn,
+                            the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                            the values array must be empty. This array is replaced during a strategic
+                            merge patch.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: atomic
+                      required:
+                      - key
+                      - operator
+                      type: object
+                    type: array
+                    x-kubernetes-list-type: atomic
+                  matchLabels:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                      map is equivalent to an element of matchExpressions, whose key field is "key", the
+                      operator is "In", and the values array contains only "value". The requirements are ANDed.
+                    type: object
+                type: object
+                x-kubernetes-map-type: atomic
+              endTime:
+                description: EndTime is the time when business hours end, in HH:mm:ss
+                  format
                 type: string
+              maxReplicas:
+                description: MaxReplicas defines the number of replicas during business
+                  hours
+                format: int32
+                type: integer
+              minReplicas:
+                description: MinReplicas defines the number of replicas during off-hours
+                format: int32
+                type: integer
+              startTime:
+                description: StartTime is the time when business hours begin, in HH:mm:ss
+                  format
+                type: string
+              timeZone:
+                default: Etc/UTC
+                description: The time zone name for the given schedule, see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones.
+                type: string
+            required:
+            - deploymentSelector
+            - endTime
+            - maxReplicas
+            - minReplicas
+            - startTime
             type: object
           status:
             description: BusinessHoursScalerStatus defines the observed state of BusinessHoursScaler
+            properties:
+              currentReplicas:
+                description: CurrentReplicas shows the current number of replicas
+                format: int32
+                type: integer
+              lastUpdated:
+                description: LastUpdated is the last time the operator reconciled
+                format: date-time
+                type: string
+            required:
+            - currentReplicas
+            - lastUpdated
             type: object
         type: object
     served: true

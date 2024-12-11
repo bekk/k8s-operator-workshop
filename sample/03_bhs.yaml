@@ -1,0 +1,14 @@
+apiVersion: apps.k8s.bekk.no/v1alpha1
+kind: BusinessHoursScaler
+metadata:
+  name: example
+  namespace: demo
+spec:
+  deploymentSelector:
+    matchLabels:
+      app: nginx
+  minReplicas: 3
+  maxReplicas: 5
+  startTime: "20:06:00"
+  endTime: "20:07:00"
+  timeZone: "Europe/Oslo"

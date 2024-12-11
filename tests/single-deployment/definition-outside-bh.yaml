@@ -1,0 +1,15 @@
+apiVersion: apps.k8s.bekk.no/v1alpha1
+kind: BusinessHoursScaler
+metadata:
+  name: normal-working-hours
+  annotations:
+    bhs.bekk.no/fake-time: "16:00:01"
+spec:
+  deploymentSelector:
+    matchLabels:
+      app: nginx
+  minReplicas: 3
+  maxReplicas: 5
+  startTime: "08:00:00"
+  endTime: "16:00:00"
+  timeZone: "Europe/Oslo"

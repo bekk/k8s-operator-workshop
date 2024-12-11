@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: normal-working-hours
+  labels:
+    app: nginx
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.16.1-alpine
+          ports:
+            - containerPort: 8080
+---
+apiVersion: apps.k8s.bekk.no/v1alpha1
+kind: BusinessHoursScaler
+metadata:
+  name: normal-working-hours
+  annotations:
+    bhs.bekk.no/fake-time: "08:16:00"
+spec:
+  deploymentSelector:
+    matchLabels:
+      app: nginx
+  minReplicas: 3
+  maxReplicas: 5
+  startTime: "08:00:00"
+  endTime: "16:00:00"
+  timeZone: "Europe/Oslo"

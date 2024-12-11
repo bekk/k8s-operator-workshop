@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: normal-working-hours-multiple-1
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: normal-working-hours-multiple-2
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: normal-working-hours-multiple-3
+  labels:
+    app: nginx
+spec:
+  replicas: 3

@@ -5,6 +5,23 @@ metadata:
   name: bekk-ws-operator
 rules:
 - apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
   - apps.k8s.bekk.no
   resources:
   - businesshoursscalers
