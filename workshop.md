@@ -83,7 +83,7 @@ make run-local
 make test
 
 # Kjør tester (og operatoren)
-make run-tests
+make run-test
 
 # Kjøre enkelttester (uten operator)
 make test-single dir=tests/some-example-test
