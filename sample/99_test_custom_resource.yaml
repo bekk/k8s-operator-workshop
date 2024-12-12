@@ -1,0 +1,7 @@
+apiVersion: apps.k8s.bekk.no/v1alpha1
+kind: BusinessHoursScaler
+metadata:
+  name: example
+  namespace: demo
+spec:
+  foo: "something"
